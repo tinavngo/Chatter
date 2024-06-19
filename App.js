@@ -1,5 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, View, Text, TextInput, Button, Alert, ScrollView } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 
 export default function App() {
   return (
@@ -18,3 +21,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+export default App;
