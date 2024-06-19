@@ -3,22 +3,51 @@ import { StyleSheet, View, Text, TextInput, Button, Alert, ScrollView } from 're
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+// import screens to navigate
+import Start from "./components/Start";
+import Chat from "./components/Chat";
 
-export default function App() {
+const App = () => {
+
+  // create the navigator
+  const Stack = createNativeStackNavigator();
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+      initialRouteName='Screen1'
+      >
+        <Stack.Screen
+        name="Start"
+        component={Start}
+        />
+        <Stack.Screen
+        name="Chat"
+        component={Chat}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
+/* 
+  const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center'
   },
+  textInput: {
+    width: '88%',
+    borderWidth: 1,
+    height: 50,
+    padding: 10
+  },
+  textDisplay: {
+    height: 50,
+    lineHeight: 50
+  }
 });
+*/
+
 export default App;
