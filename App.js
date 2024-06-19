@@ -18,7 +18,7 @@ const App = () => {
       initialRouteName='Screen1'
       >
         <Stack.Screen
-        name="Start"
+        name="Welcome"
         component={Start}
         />
         <Stack.Screen
