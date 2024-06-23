@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, View, Text, Button, TextInput, ImageBackground, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, Button, TextInput, ImageBackground, TouchableOpacity, Platform, KeyboardAvoidingView } from "react-native";
 
 const Start = ({ navigation }) => {
     const colors = ['#090C08', '#474056', '#8A95A5', '#B9C6AE'];
@@ -36,6 +36,10 @@ return (
         </View>
             {/* start chatting */}
         <TouchableOpacity
+          accessible={true}
+          accessibilityLabel="More options"
+          accessibilityHint="Lets you choose to send an image or your geolocation"
+          accessibilityRole="button"
           style={styles.button}
           onPress={() =>
             navigation.navigate("Chat", { name: name, background: background })
@@ -44,6 +48,10 @@ return (
                 <Text style={styles.chatButtonText}>Start Chatting</Text>
          </TouchableOpacity>
        </View>
+       {/* fix keyboard view */}
+       {Platform.OS === "ios" ? (
+        <KeyboardAvoidingView behavior="padding" />
+       ) : null }
      </ImageBackground>
    </View>
  );
