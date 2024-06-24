@@ -3,9 +3,21 @@ import { StyleSheet, View, Text, Button, TextInput, ImageBackground, TouchableOp
 import { getAuth, signInAnonymously, signinAnonymously } from "firebase/auth";
 
 const Start = ({ navigation }) => {
+    const auth = getAuth();
     const colors = ['#090C08', '#474056', '#8A95A5', '#B9C6AE'];
     const [name, setName] = useState('');
     const [background, setBackground] = useState('');
+
+const signInUser = () => {
+    signInAnonymously(auth)
+    .then(result => {
+        navigation.navigate("Chat", { userID: result.user.iud });
+        Alert.alert("Signed in Successfully!");
+    })
+    .catch((error) => {
+        Alert.alert("Unable to sign in, try again later.");
+    })
+}
 
 return (
     <View style={styles.container}>
@@ -42,10 +54,7 @@ return (
           accessibilityHint="Lets you choose to send an image or your geolocation"
           accessibilityRole="button"
           style={styles.button}
-          onPress={() =>
-            navigation.navigate("Chat", { name: name, background: background })
-            }
-          >
+          onPress={signInUser}>
                 <Text style={styles.chatButtonText}>Start Chatting</Text>
          </TouchableOpacity>
        </View>
