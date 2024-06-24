@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { StyleSheet, View, Text, Button, TextInput, ImageBackground, TouchableOpacity, Platform, KeyboardAvoidingView } from "react-native";
+import { getAuth, signInAnonymously, signinAnonymously } from "firebase/auth";
 
 const Start = ({ navigation }) => {
     const colors = ['#090C08', '#474056', '#8A95A5', '#B9C6AE'];
