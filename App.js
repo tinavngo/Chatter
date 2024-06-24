@@ -45,9 +45,9 @@ const Stack = createNativeStackNavigator();
         component={Start}
         />
         <Stack.Screen
-        name="Chat"
-        component={Chat}
-        />
+        name="Chat">
+          {props => <Chat db={db} {...props} />}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
