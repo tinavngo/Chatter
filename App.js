@@ -1,15 +1,16 @@
-import { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, Button, Alert, ScrollView, LogBox } from 'react-native';
+import { StyleSheet, LogBox } from 'react-native';
+
 // import React Navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 // import Firebase + initializor
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
 // import screens to navigate
-import Start from "./components/Start";
-import Chat from "./components/Chat";
+import Start from './components/Start';
+import Chat from './components/Chat';
 
 // logbox void
 LogBox.ignoreLogs(["AsyncStorage has been extracted from"]);
@@ -38,12 +39,13 @@ const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
       <Stack.Navigator
-      initialRouteName='Screen1'
+      initialRouteName='Start'
       >
         <Stack.Screen
         name="Welcome"
         component={Start}
         />
+
         <Stack.Screen
         name="Chat">
           {props => <Chat db={db} {...props} />}

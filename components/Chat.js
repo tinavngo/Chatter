@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, View, Platform, KeyboardAvoidingView, FlatList, Text } from 'react-native';
-import { Bubble, GiftedChat } from "react-native-gifted-chat";
-import { collection, addDoc, onSnapshot, orderBy, query } from "firebase/firestore";
+import { StyleSheet, View, Platform, KeyboardAvoidingView } from 'react-native';
+import { Bubble, GiftedChat } from 'react-native-gifted-chat';
+import { collection, addDoc, onSnapshot, orderBy, query } from 'firebase/firestore';
 
-const Chat = ({route, navigation, db}) => {
+const Chat = ({ route, navigation, db }) => {
     const { userID, name, background } = route.params;
     const [messages, setMessages] = useState([]);
+
+    // Send new messages
     const onSend = (newMessages) => {
       addDoc(collection(db, "messages"), newMessages[0])
     };
 
+    // Chat bubble
     const renderBubble = (props) => {
       return (
        <Bubble
@@ -26,7 +29,7 @@ const Chat = ({route, navigation, db}) => {
      );
     }
 
-    // Set user name
+    // Set title to username
     useEffect(() => {
       navigation.setOptions({ title: name });
   }, []);
@@ -47,19 +50,15 @@ const Chat = ({route, navigation, db}) => {
       });
 
       return () => {
-        if (unsubMessages) unsubMessages();
-      }
+        if (unsubMessages)
+           unsubMessages();
+      };
     }, []);
 
 
 
  return (
    <View style={[styles.container, { backgroundColor: background}]}>
-    <FlatList
-  data={messages}
-  renderItem={({ message }) =>
-    <Text>{message.text}</Text>}
-/>
     <GiftedChat
         messages={messages}
         renderBubble={renderBubble}
@@ -69,8 +68,8 @@ const Chat = ({route, navigation, db}) => {
           name
         }}
       />
-      {Platform.OS === "android" ? (
-        <KeyboardAvoidingView behavior="height" />
+      {Platform.OS === "ios" ? (
+        <KeyboardAvoidingView behavior="padding" />
       ) : null}
    </View>
  );

@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { StyleSheet, View, Text, Button, TextInput, ImageBackground, TouchableOpacity, Platform, KeyboardAvoidingView } from "react-native";
-import { getAuth, signInAnonymously, signinAnonymously } from "firebase/auth";
+import { useState } from 'react';
+import { StyleSheet, View, Text, TextInput, ImageBackground, TouchableOpacity, Platform, KeyboardAvoidingView, Alert } from 'react-native';
+import { getAuth, signInAnonymously } from 'firebase/auth';
 
 const Start = ({ navigation }) => {
     const auth = getAuth();
@@ -11,7 +11,6 @@ const Start = ({ navigation }) => {
 const signInUser = () => {
     signInAnonymously(auth)
     .then(result => {
-        navigation.navigate("Chat", { userID: result.user.iud });
         Alert.alert("Signed in Successfully!");
     })
     .catch((error) => {
@@ -32,7 +31,7 @@ return (
           style={styles.textInput}
           value={name}
           onChangeText={setName}
-          placeholder="Your name"
+          placeholder="Your username"
            />
             {/* background color */}
         <Text style={styles.chooseBgColor}>
@@ -47,11 +46,9 @@ return (
             />
           ))}
         </View>
-            {/* start chatting */}
+            {/* start chat */}
         <TouchableOpacity
-          accessible={true}
-          accessibilityLabel="More options"
-          accessibilityHint="Lets you choose to send an image or your geolocation"
+          accessibilityLabel="Start Chatting"
           accessibilityRole="button"
           style={styles.button}
           onPress={signInUser}>
