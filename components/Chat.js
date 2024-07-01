@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, View, Platform, KeyboardAvoidingView } from 'react-native';
-import { Bubble, GiftedChat, InputToolbar, InputToolbar } from 'react-native-gifted-chat';
+import { Bubble, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
 import { collection, addDoc, onSnapshot, orderBy, query } from 'firebase/firestore';
-import { useEffect } from 'react';
-import AsyncStorage from "react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Chat = ({ route, navigation, db, isConnected }) => {
     const { userID, name, background } = route.params;
     const [messages, setMessages] = useState([]);
-
     // Send new messages
     const onSend = (newMessages) => {
       addDoc(collection(db, "messages"), newMessages[0])
@@ -40,11 +38,6 @@ const Chat = ({ route, navigation, db, isConnected }) => {
     // useEffect hook to set messages options
     let unsubMessages;
 
-    // Set title to username
-    useEffect(() => {
-      navigation.setOptions({ title: name });
-  }, []);
-
     // render Firebase data
     useEffect(() => {
       if (isConnected === true){
@@ -53,11 +46,12 @@ const Chat = ({ route, navigation, db, isConnected }) => {
         // useEffect code is re-executed.
         if (unsubMessages) unsubMessages();
         unsubMessages = null;
+        // set title to username
         navigation.setOptions({ title: name });
         // Create a query to get the "messages" collection from the Firestore database
         const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
         // This function will be called whenever there are changes in the collection.
-        unsubMessages = onSnapshot(q, (docs) => {
+        const unsubMessages = onSnapshot(q, (docs) => {
           let newMessages = [];
         // Iterate through each document in the document
         docs.forEach(doc => {
@@ -78,7 +72,7 @@ const Chat = ({ route, navigation, db, isConnected }) => {
         if (unsubMessages)
            unsubMessages();
       };
-    }, [isConnected]); // isConnected used as a dependency value enabling the component to call teh callback of useEffect whenever the isConnected prop's value changes.
+    }, [isConnected]); // isConnected used as a dependency value enabling the component to call the callback of useEffect whenever the isConnected prop's value changes.
   
     const cacheMessages = async (messagesToCache) => {
       try {

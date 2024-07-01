@@ -12,7 +12,6 @@ import { getFirestore, disableNetwork, enableNetwork } from 'firebase/firestore'
 // import screens to navigate
 import Start from './components/Start';
 import Chat from './components/Chat';
-import { disableErrorHandling } from 'expo';
 
 // logbox void
 LogBox.ignoreLogs(["AsyncStorage has been extracted from"]);
