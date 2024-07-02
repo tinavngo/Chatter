@@ -1,5 +1,7 @@
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import * as Location from 'expo-location';
+import * as ImagePicker from 'expo-image-picker';
 
 const CustomActions = ({ wrapperStyle, iconTextStyle }) => {
     const actionSheet = useActionSheet();
