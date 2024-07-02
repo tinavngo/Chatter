@@ -3,6 +3,7 @@ import { StyleSheet, View, Platform, KeyboardAvoidingView } from 'react-native';
 import { Bubble, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
 import { collection, addDoc, onSnapshot, orderBy, query } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomActions from './CustomActions';
 
 
 const Chat = ({ route, navigation, db, isConnected }) => {
@@ -90,6 +91,10 @@ const Chat = ({ route, navigation, db, isConnected }) => {
       setMessages(JSON.parse(cachedMessages));
     };
 
+    const renderCustomActions = (props) => {
+      return <CustomActions {...props} />
+    };
+
 
 
  return (
@@ -103,6 +108,7 @@ const Chat = ({ route, navigation, db, isConnected }) => {
           _id: userID,
           name
         }}
+        renderActions={renderCustomActions}
       />
       {Platform.OS === "ios" ? (
         <KeyboardAvoidingView behavior="padding" />
