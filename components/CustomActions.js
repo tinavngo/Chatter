@@ -6,6 +6,35 @@ import * as ImagePicker from 'expo-image-picker';
 const CustomActions = ({ wrapperStyle, iconTextStyle }) => {
     const actionSheet = useActionSheet();
 
+    const getLocation = async () => {
+        let permissions = await Location.requestForegroundPermissionsAsync();
+        if (permissions?.granted) {
+            const location = await Location.getCurrentPositionAsync({});
+            if (location) {
+                onSend({
+                    location: {
+                        longitude: location.coords.longitude,
+                        latitude: location.coords.latitude,
+                    },
+                });
+            } else Alert.alert("Error occured while fetching location");
+        } else Alert.alert("Permissions haven't been granted.");
+    }
+
+    const pickImage = async () => {
+        let permissions = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if(permissions?.granted) {
+            let result = await ImagePicker.launchImageLibraryAsync();
+            if (!result.canceled) {
+                const imageURI = result.assets[0].uri;
+                const response = await fetch(imageURI);
+            }
+            else Alert.alert("Permissions haven't been granted.");
+        }
+    }
+
+    const newUploadRef = ref(storage, 'image123');
+
     // create options for media
     const onActionPress = () => {
         const options = ['Choose From Library', 'Take Picture', 'Send Location', 'Cancel'];
@@ -18,12 +47,13 @@ const CustomActions = ({ wrapperStyle, iconTextStyle }) => {
             async (buttonIndex) => {
                 switch (buttonIndex) {
                     case 0:
-                        console.log('user wants to pick an image');
+                        pickImage();
                         return;
                         case 1:
-                            console.log('user wants to take a photo');
+                            takePhoto();
+                            return;
                             case 2:
-                                console.log('user wants to get their location');
+                                getLocaleDirection();
                                 default:
                 }
             },

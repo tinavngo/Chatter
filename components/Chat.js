@@ -32,14 +32,16 @@ const Chat = ({ route, navigation, db, isConnected }) => {
      );
     }
 
+
+    // Keep input when connection exists otherwise, null
     const renderInputToolbar = (props) => {
       if (isConnected) return <InputToolbar {...props} />;
       else return null;
     }
 
+
     // useEffect hook to set messages options
     let unsubMessages;
-
     // render Firebase data
     useEffect(() => {
       if (isConnected === true){
@@ -74,6 +76,7 @@ const Chat = ({ route, navigation, db, isConnected }) => {
       };
     }, [isConnected]); // isConnected used as a dependency value enabling the component to call the callback of useEffect whenever the isConnected prop's value changes.
   
+
     const cacheMessages = async (messagesToCache) => {
       try {
         await AsyncStorage.setItem(
@@ -85,17 +88,42 @@ const Chat = ({ route, navigation, db, isConnected }) => {
       }
     };
 
-    // Call this function when isConnected prop turns out ot be false in useEffect()
+
+    // Call this function when isConnected prop turns out to be false in useEffect()
     const loadCachedMessages = async () => {
       // The empty array is for cachedMessages in case AsyncStorage() fails when the messages item hasn't been set yet in AsyncStorage.
       const cachedMessages = (await AsyncStorage.getItem("messages")) || [];
       setMessages(JSON.parse(cachedMessages));
     };
 
+    
     const renderCustomActions = (props) => {
       return <CustomActions {...props} />
     };
 
+
+    const renderCustomView = (props) => {
+      const { currentMessage } = props;
+      if (currentMessage.location) {
+        return (
+          <MapView
+          style={{ 
+            width: 100,
+            height: 100,
+            borderRadius: 13,
+            margin: 3
+          }}
+          region={{
+            latitude: currentMessage.location.latitutde,
+            longitude: currentMessage.location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+          />
+        );
+      }
+      return null;
+    }
 
 
  return (
@@ -105,11 +133,12 @@ const Chat = ({ route, navigation, db, isConnected }) => {
         renderBubble={renderBubble}
         renderInputToolbar={renderInputToolbar}
         onSend={(messages) => onSend(messages)}
+        renderActions={renderCustomActions}
+        renderCustomView={renderCustomView}
         user={{
           _id: userID,
           name
         }}
-        renderActions={renderCustomActions}
       />
       {Platform.OS === "ios" ? (
         <KeyboardAvoidingView behavior="padding" />
