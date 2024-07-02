@@ -39,6 +39,8 @@ return (
                         Choose a background color:
         </Text>
         <View style={styles.bgButton}>
+            
+        {/* callback for setBackground */}
         {colors.map((color, index) => (
         <TouchableOpacity
              key={index}

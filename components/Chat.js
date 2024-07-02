@@ -41,7 +41,6 @@ const Chat = ({ route, navigation, db, isConnected }) => {
     // render Firebase data
     useEffect(() => {
       if (isConnected === true){
-
         //unregister current onSnapshot() listener to avoid registering multiple listeners when
         // useEffect code is re-executed.
         if (unsubMessages) unsubMessages();
@@ -51,7 +50,7 @@ const Chat = ({ route, navigation, db, isConnected }) => {
         // Create a query to get the "messages" collection from the Firestore database
         const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
         // This function will be called whenever there are changes in the collection.
-        const unsubMessages = onSnapshot(q, (docs) => {
+         unsubMessages = onSnapshot(q, (docs) => {
           let newMessages = [];
         // Iterate through each document in the document
         docs.forEach(doc => {
@@ -69,8 +68,7 @@ const Chat = ({ route, navigation, db, isConnected }) => {
       // Clean up code
 
       return () => {
-        if (unsubMessages)
-           unsubMessages();
+        if (unsubMessages) unsubMessages();
       };
     }, [isConnected]); // isConnected used as a dependency value enabling the component to call the callback of useEffect whenever the isConnected prop's value changes.
   
