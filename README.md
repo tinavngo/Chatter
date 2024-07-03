@@ -19,7 +19,7 @@ This project involves the development of a mobile chat application using React N
 
 To run this app locally, you'll need to follow these steps:
 
- - Clone this repository
+ - Clone this repository (Skip this step if: You would like to create your own native app)
 
  - Set up Expo in your development environment:
 
@@ -38,7 +38,7 @@ To run this app locally, you'll need to follow these steps:
     nvm use 16.19.0
     nvm alias default 16.19.0
 
- - Create your project
+ - Create your project (Do this step if: You would like to create your own native app)
 
     npx create-expo-app project-name --template
     
@@ -48,7 +48,7 @@ To run this app locally, you'll need to follow these steps:
 
     npm install
 
- - Start up the environment to review the development process of your project
+ - Start up the environment to review the development process of the app
 
     npx expo start
 
