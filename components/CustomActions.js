@@ -1,5 +1,6 @@
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import * as Location from 'expo-location';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -41,17 +42,30 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, userID })
         let permissions = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if(permissions?.granted) {
             let result = await ImagePicker.launchImageLibraryAsync();
-            if (!result.canceled) {
-                const imageURI = result.assets[0].uri;
-                const response = await fetch(imageURI);
-            }
+            if (!result.canceled) await uploadAndSendImage(result.assets[0].uri);
             else Alert.alert("Permissions haven't been granted.");
         }
     }
 
-    const newUploadRef = ref(storage, 'image123');
+    // take a photo and upload
+    const takePhoto = async () => {
+        let permissions = await ImagePicker.requestCameraPermissionsAsync();
+        if(permissions?.granted) {
+            let result = await ImagePicker.launchCameraAsync();
+            if (!result.canceled) await uploadAndSendImage(result.assets[0].uri);
+            else Alert.alert("Permissions haven't been granted.");
+        }
+    }
 
-    // create options for media
+    // Allow for more than one image to be sent
+    const generateReference = (uri) => {
+        const timeStamp = (new Date()).getTime();
+        const imageName = uri.split("/")[uri.split("/").length - 1];
+        return `${userID}-${timeStamp}-${imageName}`
+    }
+
+
+    // create menu options for media
     const onActionPress = () => {
         const options = ['Choose From Library', 'Take Picture', 'Send Location', 'Cancel'];
         const cancelButtonIndex = options.length - 1;
@@ -69,7 +83,7 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, userID })
                             takePhoto();
                             return;
                             case 2:
-                                getLocaleDirection();
+                                getLocation();
                                 default:
                 }
             },
@@ -77,9 +91,14 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, userID })
     };
 
     return (
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={onActionPress}
+        accessible={true}
+        accessibilityLabel="Send messages through the input field and click on the icon for more media options."
+        accessibilityHint="Choose to select a photo from library, take a picture, or send your location."
+        accessibilityRole="button"
+        >
             <View style={[styles.wrapper, wrapperStyle]}>
-                <Text style={[styles.iconText, iconTextStyle]}> + </Text>
+                <Text style={[styles.iconText, iconTextStyle]}>+</Text>
             </View>
         </TouchableOpacity>
     );
@@ -101,7 +120,7 @@ const styles = StyleSheet.create({
     iconText: {
         color: '#b2b2b2',
         fontWeight: 'bold',
-        fontSize: 10,
+        fontSize: 16,
         backgroundColor: 'transparent',
         textAlign: 'center'
     }
