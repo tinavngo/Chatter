@@ -11,7 +11,7 @@ This project involves the development of a mobile chat application using React N
 
 - Data gets stored online and offline
 
-### Getting Started
+## Getting Started
 
  - React Native
  - Expo and Expo Go App
