@@ -3,9 +3,11 @@ import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import * as Location from 'expo-location';
 import * as ImagePicker from 'expo-image-picker';
 
-const CustomActions = ({ wrapperStyle, iconTextStyle }) => {
+const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, userID }) => {
+    // actionSheet displays the menu of actions stored in const options
     const actionSheet = useActionSheet();
 
+    // get and send location
     const getLocation = async () => {
         let permissions = await Location.requestForegroundPermissionsAsync();
         if (permissions?.granted) {
@@ -21,6 +23,20 @@ const CustomActions = ({ wrapperStyle, iconTextStyle }) => {
         } else Alert.alert("Permissions haven't been granted.");
     }
 
+    // saves images to library
+    const uploadAndSendImage = async (imageURI) => {
+        const uniqueRefString = generateReference(imageURI);
+        const response = await fetch(imageURI);
+        const blob = await response.blob();
+        const newUploadRef = ref(storage, uniqueRefString);
+        uploadBytes(newUploadRef, blob).then(async (snapshot) => {
+            console.log('File has been uploaded successfully');
+            const imageURL = await getDownloadURL(snapshot.ref)
+            onSend({ image:imageURL })
+        });
+    }
+
+    // choose a photo from library
     const pickImage = async () => {
         let permissions = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if(permissions?.granted) {

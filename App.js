@@ -8,6 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // import Firebase + initializor
 import { initializeApp } from 'firebase/app';
 import { getFirestore, disableNetwork, enableNetwork } from 'firebase/firestore';
+import { getStorage } from "firebase/storage";
 
 // import screens to navigate
 import Start from './components/Start';
@@ -36,6 +37,9 @@ const db = getFirestore(app);
 
 const connectionStatus = useNetInfo();
 
+// Get storage from firebase
+const storage = getStorage(app);
+
 // display alert popup when connection is lost
 useEffect(() => {
   if (connectionStatus.isConnected === false) {
@@ -61,7 +65,11 @@ const Stack = createNativeStackNavigator();
 
         <Stack.Screen
         name="Chat">
-          {props => <Chat isConnected={connectionStatus.isConnected}db={db} {...props} />}
+          {props => <Chat 
+          isConnected={connectionStatus.isConnected}
+          db={db} 
+          storage={storage}
+          {...props} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

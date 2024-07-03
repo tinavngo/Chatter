@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomActions from './CustomActions';
 
 
-const Chat = ({ route, navigation, db, isConnected }) => {
+const Chat = ({ route, navigation, db, isConnected, storage }) => {
     const { userID, name, background } = route.params;
     const [messages, setMessages] = useState([]);
     // Send new messages
@@ -96,9 +96,9 @@ const Chat = ({ route, navigation, db, isConnected }) => {
       setMessages(JSON.parse(cachedMessages));
     };
 
-    
+    // create custom actions and pass props
     const renderCustomActions = (props) => {
-      return <CustomActions {...props} />
+      return <CustomActions userID={userID} storage={storage} {...props} />
     };
 
 
