@@ -36,6 +36,7 @@ To run this app locally, you'll need to follow these steps:
  - Use the proper version of node for this project
 
     `nvm use 16.19.0`
+    
     `nvm alias default 16.19.0`
 
  - Create your project (Do this step if: You would like to create your own native app)
