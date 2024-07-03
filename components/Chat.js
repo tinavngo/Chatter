@@ -12,8 +12,9 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
     const [messages, setMessages] = useState([]);
     // Send new messages
     const onSend = (newMessages) => {
-      addDoc(collection(db, "messages"), newMessages[0])
-    };
+      // the message to be sent/added is the 1st item inside the newMessages array
+      addDoc(collection(db, "messages"), newMessages[0]);
+    }
 
     // Chat bubble
     const renderBubble = (props) => {
@@ -33,29 +34,23 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
     }
 
 
-    // Keep input when connection exists otherwise, null
-    const renderInputToolbar = (props) => {
-      if (isConnected) return <InputToolbar {...props} />;
-      else return null;
-    }
-
-
     // useEffect hook to set messages options
     let unsubMessages;
     // render Firebase data
     useEffect(() => {
+      // set title to username
+      navigation.setOptions({ title: name });
       if (isConnected === true){
+        // Create a query to get the "messages" collection from the Firestore database
+          const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
         //unregister current onSnapshot() listener to avoid registering multiple listeners when
         // useEffect code is re-executed.
         if (unsubMessages) unsubMessages();
         unsubMessages = null;
-        // set title to username
-        navigation.setOptions({ title: name });
-        // Create a query to get the "messages" collection from the Firestore database
-        const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
         // This function will be called whenever there are changes in the collection.
          unsubMessages = onSnapshot(q, (docs) => {
           let newMessages = [];
+          
         // Iterate through each document in the document
         docs.forEach(doc => {
           newMessages.push({
@@ -64,6 +59,7 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
             createdAt: new Date(doc.data().createdAt.toMillis()),
           })
         });
+
         cacheMessages(newMessages);
         setMessages(newMessages);
         });
@@ -77,6 +73,7 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
     }, [isConnected]); // isConnected used as a dependency value enabling the component to call the callback of useEffect whenever the isConnected prop's value changes.
   
 
+    // create cache messages
     const cacheMessages = async (messagesToCache) => {
       try {
         await AsyncStorage.setItem(
@@ -90,6 +87,7 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
 
 
     // Call this function when isConnected prop turns out to be false in useEffect()
+    // load cache messages from storage
     const loadCachedMessages = async () => {
       // The empty array is for cachedMessages in case AsyncStorage() fails when the messages item hasn't been set yet in AsyncStorage.
       const cachedMessages = (await AsyncStorage.getItem("messages")) || [];
@@ -101,6 +99,11 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
       return <CustomActions userID={userID} storage={storage} {...props} />
     };
 
+    // Keep input when connection exists otherwise, null
+    const renderInputToolbar = (props) => {
+      if (isConnected) return <InputToolbar {...props} />;
+      else return null;
+    }
 
     const renderCustomView = (props) => {
       const { currentMessage } = props;
@@ -137,7 +140,7 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
         renderCustomView={renderCustomView}
         user={{
           _id: userID,
-          name
+          name: name
         }}
       />
       {Platform.OS === "ios" ? (
