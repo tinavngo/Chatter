@@ -31,14 +31,27 @@ To run this app locally, you'll need to follow these steps:
 
  Search for the Expo Go app in the relevant app store for your device (IOS or Android)
 
- - Create an Expo account.
+ - Create an Expo account and Login using the terminal
+ 
+ - Use the proper version of node for this project
 
     nvm use 16.19.0
     nvm alias default 16.19.0
 
+ - Create your project
+
+    npx create-expo-app project-name --template
+    
+    You will be shown a list of templates to pick from, choose 'Blank template' for a concise canvas to work from
+
  - Navigate to the chat-app directory and install dependencies
 
     npm install
+
+ - Start up the environment to review the development process of your project
+
+    npx expo start
+
 
 ### User Stories
 
@@ -53,3 +66,14 @@ To run this app locally, you'll need to follow these steps:
 > As a user, I want to be able to erad my messages offline so I can reread conversations at any time.
 
 > As a user with a visual impairment, I want to use a chat app that is compatible with a screen reader so that I can engage with a chat interface.
+
+### Project Rubric
+
+- The app is developed using Expo and React Native
+- The app must be compatible for both Android and iPhone users
+- Conversations including media must be stored in the Google Firestone Database
+- The app must authenticate users anonymously with Firebase
+- Conversations are stored locally
+- Permission must be granted to use media tools (take photo, choose photo, and send location)
+- The app's codebase contains explaination to specific functionalities
+- The chat interface is developed using Gifted Chat Library
