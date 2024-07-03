@@ -25,7 +25,7 @@ To run this app locally, you'll need to follow these steps:
 
  - Install Expo and Expo CLI, as this will provide you the necessary template to build this app;
 
-     npm install -g expo-cli
+     `npm install -g expo-cli`
 
  - Install Expo Go app on your mobile device, so that you can test your app on your own mobile device;
 
@@ -35,22 +35,22 @@ To run this app locally, you'll need to follow these steps:
  
  - Use the proper version of node for this project
 
-    nvm use 16.19.0
-    nvm alias default 16.19.0
+    `nvm use 16.19.0`
+    `nvm alias default 16.19.0`
 
  - Create your project (Do this step if: You would like to create your own native app)
 
-    npx create-expo-app project-name --template
+   `npx create-expo-app project-name --template`
     
     You will be shown a list of templates to pick from, choose 'Blank template' for a concise canvas to work from
 
  - Navigate to the chat-app directory and install dependencies
 
-    npm install
+   `npm install`
 
  - Start up the environment to review the development process of the app
 
-    npx expo start
+    `npx expo start`
 
 
 ### User Stories
