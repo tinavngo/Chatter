@@ -143,9 +143,8 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
           name: name
         }}
       />
-      {Platform.OS === "ios" ? (
-        <KeyboardAvoidingView behavior="padding" />
-      ) : null}
+      {/* prevent input field and color picker from being obstructed from keyboard */}
+      {Platform.OS === "android" ? (<KeyboardAvoidingView behavior="height" />) : null}
    </View>
  );
 }

@@ -59,9 +59,7 @@ return (
          </TouchableOpacity>
        </View>
        {/* fix keyboard view */}
-       {Platform.OS === "ios" ? (
-        <KeyboardAvoidingView behavior="padding" />
-       ) : null }
+       {Platform.OS === "android" ? (<KeyboardAvoidingView behavior="height" />) : null }
      </ImageBackground>
    </View>
  );
